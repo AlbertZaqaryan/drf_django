@@ -17,16 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from main.views import CarView, CategoryView
+from main.views import CarView, CategoryView, UserView , CarListAPIView , CarDestroyAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'car', CarView)
 router.register(r'category', CategoryView)
+router.register(r'user', UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('car_list/', include(router.urls))
+    path('car_list/', include(router.urls)),
+    path('cars/' , CarListAPIView.as_view()),
+    path('cars/delete/<int:pk>' , CarDestroyAPIView.as_view()),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
